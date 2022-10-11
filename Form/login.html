@@ -70,6 +70,7 @@ and open the template in the editor.
         </style>
 
     </head>
+    
     <body class="text-center">
 
         <header>
@@ -91,35 +92,54 @@ and open the template in the editor.
             <h2 align="center">
                 Effettua il login per acquistare i nostri prodotti!
             </h2>
-        </p>
-        <br><br>
-        <form action="" method="get">
-            <div class="mb-3">
-
-                <label for="exampleInputEmail1" class="form-label">
-                    Email
-                </label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" pattern="[a-z0-9]+.+[a-z0-9]+@buonarroti.tn.it" placeholder="nome.cognome@buonarroti.tn.it" required="">
-
-                <div id="emailHelp" class="form-text">
-                    Non condivideremo mai la tua email con nessuno.
+            </p>
+            <br><br>
+            
+            <form action="" method="get" onsubmit="unisci()">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">
+                        Email
+                    </label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="txtEmail" aria-describedby="emailHelp" name="email" maxlength="50" pattern="[a-z]{3,20}\.[a-z]{3,20}[0-9]*" placeholder="nome.cognome" required="">
+                        <span class="input-group-text" id="snpDominio" name="spnDominio">@buonarroti.tn.it</span>
+                    </div>
+                    <div id="emailHelp" class="form-text">
+                        Non condivideremo mai la tua email con nessuno.
+                    </div>
                 </div>
 
-            </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                   <input name="txtPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}" required="">
+                </div>
 
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-               <input name="txtPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$" required="">
-            </div>
+                <button type="submit" class="btn btn-primary" name="btnSubmit" value="submit">Login</button>
+                <br><br>
+                <p style="text-align: center; color: black">
+                    <font size="+1">
+                    Se non ti sei ancora registrato passa da <a href="sign-up2.html">qui</a>!
+                    </font>
+                </p>
+            </form> 
+        </div>
+            
+        <script>
+           email = document.getElementById("txtEmail");
+           
+           function validaEmail() {
+                testo = email.value;
 
-            <button type="submit" class="btn btn-primary" name="btnSubmit" value="submit">Login</button>
-            <br><br>
-            <p style="text-align: center; color: black">
-                <font size="+1">
-                Se non ti sei ancora registrato passa da <a href="sign-up2.html">qui</a>!
-                </font>
-            </p>  
-        </form> 
-    </div>
-</body>
+                if (testo.lastIndexOf("@") != -1)
+                    email.setCustomValidity("Bella bro");
+           }
+
+           function unisci(){
+                output = email.value + document.getElementById("spnDominio").innerHtml;
+                document.getElementById("txtEmail").value = output;
+           }
+           
+           email.onkeyup = validaEmail();
+        </script>
+    </body>
 </html>
