@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>Awesome website</title>
+        
+        <link rel="stylesheet" href="../bootstrap_CSS-JS/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../bootstrap_CSS-JS/css/bootstrap.rtl.min.css">
+        <script src="../bootstrap_CSS-JS/js/bootstrap.bundle.min.js"></script>
+        
+    </head>
+
+    <body> 
+
+        <nav class="navbar" style="background-color: cornflowerblue;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">Home</a>
+            </div>
+        </nav>
+
+        <!-- TITOLO -->
+        <div style="text-align: center; font-family: cursive; margin: 2%;">
+
+        <h1>MORRA CINESE</h1>
+
+        </div>
+
+        <!-- FORM -->
+        <div id="divForm" style="margin-left: 25%; margin-right: 25%; text-align: center;">
+            <form onsubmit="init()" id="form" action="" method="get">
+                <label class="form-label" for="inpTxtNickname">Nickname:</label><br>
+                <input class="form-control" type="text" id="inpTxtNickname" name="inpTxtNickname" pattern="^.{3,20}$" required style="text-align: center;">
+                <br>
+                <label class="form-label" for="inpNmbNumeroManche">Numero manche:</label><br>
+                <input class="form-control" type="number" id="inpNmbNumeroManche" name="inpNmbNumeroManche" required min="1" style="text-align: center;">
+                <br>
+                <button type="submit" name="btnInizio" class="btn btn-primary">
+                    Iniziamo!
+                </button>
+            </form>
+        </div>
+        
+        <br>
+        
+        <!-- GIOCO EFFETTIVO -->
+        <div hidden id="divGioco" style="text-align: center">
+            <div id="situazioneIniziale">
+                <img src="img/carta_forbice_sasso.png" usemap="#image-map">
+                <map name="image-map">
+                    <area coords="238,325,63,171" shape="rect" onclick="play(1)"> <!-- carta -> 1 -->
+                    <area coords="1,0,180,129"    shape="rect" onclick="play(2)"> <!-- forbice -> 2 -->
+                    <area coords="399,167,265,45" shape="rect" onclick="play(3)"> <!-- sasso -> 3 -->
+                </map>
+            </div>
+            <div hidden id="cartaCarta">
+                <img src="img/carta_sx.png">
+                <img src="img/carta_dx.png">
+            </div>
+            <div hidden id="cartaForbice">
+                <img src="img/carta_sx.png">
+                <img src="img/forbice_dx.png">
+            </div>
+            <div hidden id="cartaSasso">
+                <img src="img/carta_sx.png">
+                <img src="img/sasso_dx.png">
+            </div>
+            <div hidden id="forbiceCarta">
+                <img src="img/forbice_sx.png">
+                <img src="img/carta_dx.png">
+            </div>
+            <div hidden id="forbiceForbice">
+                <img src="img/forbice_sx.png">
+                <img src="img/forbice_dx.png">
+            </div>
+            <div hidden id="forbiceSasso">
+                <img src="img/forbice_sx.png">
+                <img src="img/sasso_dx.png">
+            </div>
+            <div hidden id="sassoCarta">
+                <img src="img/sasso_sx.png">
+                <img src="img/carta_dx.png">
+            </div>
+            <div hidden id="sassoForbice">
+                <img src="img/sasso_sx.png">
+                <img src="img/forbice_dx.png">
+            </div>
+            <div hidden id="sassoSasso">
+                <img src="img/sasso_sx.png">
+                <img src="img/sasso_dx.png">
+            </div>
+            <br>
+            <label id="lblVincitore">Chi vincerà?</label>
+            <br><br>
+            <button hidden type="button" id="btnProssimaManche" class="btn btn-primary" onclick="manche()">
+                Prossima Manche
+            </button>
+        </div>
+        
+        <!-- FINE -->
+        <div hidden id="fine" style="text-align: center; font-family: cursive; margin: 2%;">
+            <h3>FINE</h3>
+            <br>
+            <button type="button" id="btnRigioca" class="btn btn-primary" onclick="reload">
+                Rigioca
+            </button>
+        </div>
+        
+        <script>
+            var numManche;
+            var currentSituation;
+            
+            function init() {
+                console.log("Ciaoooo");
+                numManche = document.getElementById("inpNmbNumeroManche").value;
+                //document.getElementById("divForm").onclose
+                document.getElementById("divForm").hidden = true;
+                document.getElementById("divGioco").hidden = false;
+            }
+            
+            function play(sasCarForGiocatore) {
+                sasCarForComputer = Math.round(Math.random() * 3)+1;
+                document.getElementById("situazioneIniziale").hidden = true;
+                
+                if(sasCarForGiocatore === sasCarForComputer){
+                    document.getElementById("lblVincitore").innerHTML = "Pareggio!";
+                    switch(sasCarForGiocatore){
+                        case 1:
+                            document.getElementById("cartaCarta").hidden = false;
+                            currentSituation = "cartaCarta";
+                            break;
+                        case 2:
+                            document.getElementById("forbiceForbice").hidden = false;
+                            currentSituation = "forbiceForbice";
+                            break;
+                        case 3:
+                            document.getElementById("sassoSasso").hidden = false;
+                            currentSituation = "sassoSasso";
+                            break;
+                    }
+                }
+                else{
+                    switch(sasCarForComputer){
+                        case 1:
+                            if(sasCarForGiocatore === 3){
+                                document.getElementById("sassoCarta").hidden = false;
+                                currentSituation = "sassoCarta";
+                                document.getElementById("lblVincitore").innerHTML = "Hai perso :(";
+                            }
+                            else{
+                                document.getElementById("forbiceCarta").hidden = false;
+                                currentSituation = "forbiceCarta";
+                                document.getElementById("lblVincitore").innerHTML = "Hai vinto!!!";
+                            }
+                            break;
+                        case 2:
+                            if(sasCarForGiocatore === 1){
+                                document.getElementById("cartaForbice").hidden = false;
+                                currentSituation = "cartaForbice";
+                                document.getElementById("lblVincitore").innerHTML = "Hai perso :(";
+                            }
+                            else{
+                                document.getElementById("sassoForbice").hidden = false;
+                                currentSituation = "sassoForbice";
+                                document.getElementById("lblVincitore").innerHTML = "Hai vinto!!!";
+                            }
+                            break;
+                        case 3:
+                            if(sasCarForGiocatore === 2){
+                                document.getElementById("forbiceSasso").hidden = false;
+                                currentSituation = "forbiceSasso";
+                                document.getElementById("lblVincitore").innerHTML = "Hai perso :(";
+                            }
+                            else{
+                                document.getElementById("cartaSasso").hidden = false;
+                                currentSituation = "cartaSasso";
+                                document.getElementById("lblVincitore").innerHTML = "Hai vinto!!!";
+                            }
+                            break;
+                    }
+                }
+                if(numManche > 1)
+                    document.getElementById("btnProssimaManche").hidden = false;
+            }
+            
+            function manche() {
+                if(numManche > 0){
+                    document.getElementById("situazioneIniziale").hidden = false;
+                    document.getElementById(currentSituation).hidden = true;
+                    document.getElementById("lblVincitore").innerHTML = "Chi vincerà?";
+                    numManche--;
+                }
+                else{
+                    document.getElementById("situazioneIniziale").hidden = true;
+                    document.getElementById("divGioco").hidden = true;
+                    document.getElementById("fine").hidden = false;
+                }
+                
+            }
+        </script>
+        
+    </body>
+
+</html>
